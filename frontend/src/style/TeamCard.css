@@ -1,0 +1,38 @@
+.TeamCard_outer{
+    width: 80vw;
+    height: 20vh;
+    box-shadow: 8px 8px 5px rgb(116, 117, 173);
+}
+
+.TeamCard_bg{
+    height: 80%;
+    width: 100%;
+    background-image: url("https://gstatic.com/classroom/themes/img_code.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.Card_bg_text{
+    margin-left: 3%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-size: 1.3rem;
+    color: blanchedalmond;
+}
+
+a{
+    text-decoration: none;
+}
+
+.TeamCreated_icon{
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    margin-right: 2vw;
+    height: 20%;
+    font-size: 1.2rem;
+}

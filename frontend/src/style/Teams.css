@@ -1,0 +1,20 @@
+.Team-outer{
+    height: 100vh;
+    width: 100vw;
+}
+
+.Team-container{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 5vh;
+}
+
+.Teams-flex-container{
+    margin-top: 5vh;
+    display: flex;
+    flex-direction: column;
+    gap: 5vh;
+}

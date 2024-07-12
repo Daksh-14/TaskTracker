@@ -1,0 +1,33 @@
+nav>ul{
+    display: flex;
+    list-style: none;
+    width: 20vw;
+    justify-content: space-evenly;
+    height: 100%;
+}
+
+nav li{
+    margin: auto 0;
+}
+
+nav a{
+    text-decoration: none;
+    color: aliceblue;
+}
+
+nav{
+    display: flex;
+    width: 100vw;
+    background-color: #4343a3;
+    height: 12vh;
+    font-size: 1.5rem;
+    position: sticky;
+    top:0;
+}
+
+nav>a{
+    margin-right: auto;
+    margin-left: 7vw;
+    margin-top: auto;
+    margin-bottom: auto;
+}
