@@ -3,6 +3,7 @@ import cookieParser from "cookie-parser";
 import authRoutes from './routes/Auth.js';
 import {db} from './database/db.js'
 import teamRoutes from './routes/Team.js'
+import taskRoutes from './routes/Task.js'
 import cors from 'cors';
 const PORT=3000;
 const app=express();
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use('/auth',authRoutes);
 app.use('/team',teamRoutes);
+app.use('/task',taskRoutes)
 
 try{
     db.connect();

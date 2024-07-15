@@ -1,0 +1,10 @@
+.button-group button{
+    background-color: aliceblue;
+    color: black;
+    width: 35px;
+    height: 35px;
+}
+
+.button-group .is-active{
+    background-color: rgb(189, 187, 211);
+}
