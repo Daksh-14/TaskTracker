@@ -9,15 +9,16 @@ const upload = multer({ storage: storage });
 const router = express.Router();
 
 router
-  .route('/create')
+  .route('/:id/create')
   .post(authenticate, upload.array('files', 10), async (req, res) => {
     const user = req.user;
-    const teamId=req.params.id;
-    const { title, description, dueDate } = req.body;
-    const files = req.files;
-
+    const teamId=parseInt(req.params.id);
+    const { title, description } = req.body.formData;
+    const files = req.formData.files;
+    console.log(user)
+    console.log(teamId);
     // Check if user is a team leader
-    const teamLeaderCheck = await db.query('SELECT * FROM teams WHERE id=$1 AND teamleader=$2', [teamId, user.id]);
+    const teamLeaderCheck = await db.query('SELECT * FROM teams WHERE id=$1 AND teamleader=$2', [teamId, user]);
 
     if (teamLeaderCheck.rowCount === 0) {
       return res.status(403).json({ message: 'You are not authorized to create tasks for this team.' });
@@ -34,6 +35,11 @@ router
         }
       }
       console.log(JSON.stringify(fileUrls));
+      console.log(title);
+      console.log(description);
+      console.log(teamId);
+      console.log(fileUrls);
+
       await db.query(
         'INSERT INTO tasks (title, description, teamId, fileUrls) VALUES ($1, $2, $3, $4)',
         [title, description, teamId, JSON.stringify(fileUrls)]
@@ -47,7 +53,7 @@ router
   });
 
 router
-    .route('/addtask')
+    .route('/:id/addtask')
     .post(authenticate,async(req,res)=>{
         const {array,taskid}=req.body;
         const id=req.params.id

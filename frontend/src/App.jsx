@@ -11,6 +11,8 @@ import TeamsLayout from "./TeamsLayout.jsx";
 import ProtectedRoutes from "./components/ProtectedRoutes.jsx";
 import { JoinForm } from "./pages/JoinForm.jsx";
 import { CreateForm } from "./pages/CreateForm.jsx";
+import LeaderTask from "./pages/LeaderTask.jsx";
+import CreateTask from "./pages/CreateTask.jsx";
 
 function App() {
   return (
@@ -23,7 +25,11 @@ function App() {
             <Route path="login" element={<Login />} />
           </Route>
           <Route path="/task-tracker" element={<ProtectedRoutes><TeamsLayout/></ProtectedRoutes>}>
-            <Route path="created" element={<CreatedTeams />}/>
+            <Route path="created" element={<CreatedTeams />}>
+              <Route path=":teamId" element={<LeaderTask/>}>
+                <Route path="create" element={<CreateTask/>}/>
+              </Route>
+            </Route>
             <Route path="createteam" element={<CreateForm />} />
             <Route path="joined" element={<JoinedTeams />}/>
             <Route path="jointeam" element={<JoinForm />} />

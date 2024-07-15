@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../config/axiosconfig";
 import TeamCard from "../components/TeamCard";
-import { Link } from "react-router-dom";
+import { Link,useLocation,Outlet} from "react-router-dom";
 import "../style/Teams.css"
 
 const CreatedTeams = () => {
   const [teams, setTeams] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const location=useLocation()
   useEffect(() => {
     const fetchCreatedTeams = async () => {
+      console.log(location.pathname)
       try {
+        console.log("here")
         const response = await axiosInstance.get('/team/all/created');
         setTeams(response.data.teams);
       } catch (error) {
@@ -28,18 +30,23 @@ const CreatedTeams = () => {
       {loading ? (
         <h1>Loading...</h1>
       ) : (
-        <div className="Team-container">
-          <div>
-            <Link to="../createteam"><button>Join a team</button></Link>
+        <>
+        {location.pathname === "/task-tracker/created" && (
+          <div className="Team-container">
+            <div>
+              <Link to="../createteam"><button>Join a team</button></Link>
+            </div>
+            <h1 className="header">Teams You Have Created</h1>
+            <div className="Teams-flex-container">
+              
+              { teams.length>0 ? teams.map((team) => (
+                <TeamCard key={team.id} TeamName={team.teamname} TeamLeader="You" created={true} />
+              )) : <p>You haven't created any Teams </p>}
+            </div>
           </div>
-          <h1 className="header">Teams You Have Created</h1>
-          <div className="Teams-flex-container">
-            
-            { teams.length>0 ? teams.map((team) => (
-              <TeamCard key={team.id} TeamName={team.teamname} TeamLeader="You" created={true} />
-            )) : <p>You haven't created any Teams </p>}
-          </div>
-        </div>
+        )}
+        <Outlet/>
+        </>
       )}
     </div>
   );
