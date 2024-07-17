@@ -1,0 +1,65 @@
+/* Assuming you're using a CSS file */
+.TaskCard_outer {
+    width: 84vw;
+    height:12vh;
+    background-color: #f9f9f9;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 2px 2px 4px rgba(109, 123, 177, 0.671);
+    display: flex;
+    justify-content: center;
+  }
+  
+  .TaskCard-link {
+    text-decoration: none;
+    color: #333;
+  }
+  
+  .TaskCard-cover {
+    height: 90%;
+    width: 80vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .TaskCard_details1 {
+    height: 82%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .TaskCard_title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    white-space: nowrap; /* Prevent title from wrapping */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 60vw;
+  }
+  
+  .TaskCard_name {
+    font-size: 1rem;
+    color: #777;
+  }
+  
+  .TaskCard_details2 {
+    height: 82%;
+    font-size:1rem;
+    color: #555;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  @media screen and (max-width: 730px) {
+    .TaskCard_title {
+        font-size: 1.05rem;
+    }
+  }
+  @media screen and (max-width: 530px) {
+    .TaskCard_title {
+        max-width: 50vw;
+        font-size: 1rem;
+    }
+  }

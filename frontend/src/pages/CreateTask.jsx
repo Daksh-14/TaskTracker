@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import axiosInstance from '../config/axiosconfig';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -14,23 +14,44 @@ const CreateTask = () => {
     files: [],
     links: []
   });
+  const fileInputRef = useRef(null);
   const [linkInput, setLinkInput] = useState('');
   const { teamId } = useParams();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Create a FormData object
+    const data = new FormData();
+    data.append('title', formData.title);
+    data.append('description', formData.description);
+    data.append('dueDate', formData.dueDate.toISOString());
+
+    formData.files.forEach(file => {
+      data.append('files', file);
+    });
+
+    formData.links.forEach(link => {
+      data.append('links', link);
+    });
+
     try {
-      
-      const response = await axiosInstance.post(`/task/${teamId}/create`, {
-        formData
+      const response = await axiosInstance.post(`/task/${teamId}/create`, data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       });
-      setTasks((prevTasks) => [...prevTasks, response.data.task]);
+      console.log(response);
+      await axiosInstance.post('/task/addtask',{taskid:response.data.id,uid:response.data.user})
       setFormData({
         title: '',
-        description: EditorState.createEmpty(),
+        description: '',
         dueDate: new Date(),
         files: [],
         links: []
       });
+
+      fileInputRef.current.value = null;
     } catch (error) {
       console.error('Error adding task', error);
     }
@@ -44,11 +65,7 @@ const CreateTask = () => {
   };
 
   const handleFileChange = (e) => {
-    const files = Array.from(e.target.files);
-    const newFiles = files.map(file => ({
-      file,
-      preview: URL.createObjectURL(file)
-    }));
+    const newFiles = Array.from(e.target.files);
     setFormData((prevData) => ({
       ...prevData,
       files: [...prevData.files, ...newFiles]
@@ -61,6 +78,9 @@ const CreateTask = () => {
       ...prevData,
       files: newFiles
     }));
+    if (newFiles.length === 0) {
+      fileInputRef.current.value = null;
+    }
   };
 
   const handleAddLink = () => {
@@ -79,22 +99,6 @@ const CreateTask = () => {
       ...prevData,
       links: newLinks
     }));
-  };
-
-  const handleEditorChange = (editorState) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      description: editorState
-    }));
-  };
-
-  const handleKeyCommand = (command, editorState) => {
-    const newState = RichUtils.handleKeyCommand(editorState, command);
-    if (newState) {
-      handleEditorChange(newState);
-      return 'handled';
-    }
-    return 'not-handled';
   };
 
   return (
@@ -117,7 +121,7 @@ const CreateTask = () => {
             </div>
             <div className="CreateTask_desc">
               <label htmlFor="description">Description</label>
-              <Editor/>
+              <Editor formData={formData} setFormData={setFormData} />
             </div>
             <div className="CreateTask_date">
               <label htmlFor="dueDate">Due Date</label>
@@ -129,24 +133,16 @@ const CreateTask = () => {
             </div>
             <div className="CreateTask_files">
               <label htmlFor="files">Upload Files</label>
-              <input
-                type="file"
-                multiple
-                onChange={handleFileChange}
-              />
-              <div className="files_preview">
-                {formData.files.map((fileObj, index) => (
-                  <div key={index} className="file_item">
-                    {fileObj.file.type.startsWith('image/') ? (
-                      <img src={fileObj.preview} alt={fileObj.file.name} className="file_preview" />
-                    ) : (
-                      <div className="file_preview">
-                        <p>{fileObj.file.name}</p>
-                      </div>
-                    )}
-                    <button type="button" onClick={() => handleRemoveFile(index)}>Remove</button>
-                  </div>
-                ))}
+              <input type="file" name="files" multiple onChange={handleFileChange} ref={fileInputRef} />
+              <div>
+                {
+                  formData.files.map((file, index) => (
+                    <div key={index}>
+                      <span>{file.name}</span>
+                      <button type="button" onClick={() => handleRemoveFile(index)}>Remove</button>
+                    </div>
+                  ))
+                }
               </div>
             </div>
             <div className="CreateTask_links">
@@ -169,6 +165,9 @@ const CreateTask = () => {
             </div>
             <div className="button_container">
               <button className="task_submit" type="submit">Add Task</button>
+            </div>
+            <div>
+              
             </div>
           </div>
         </form>

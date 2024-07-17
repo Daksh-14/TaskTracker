@@ -13,6 +13,9 @@ import { JoinForm } from "./pages/JoinForm.jsx";
 import { CreateForm } from "./pages/CreateForm.jsx";
 import LeaderTask from "./pages/LeaderTask.jsx";
 import CreateTask from "./pages/CreateTask.jsx";
+import AddTask from "./components/AddTask.jsx";
+import GenLayout from "./GenLayout.jsx";
+import DedicatedTaskL from "./pages/DedicatedTaskL.jsx";
 
 function App() {
   return (
@@ -26,8 +29,11 @@ function App() {
           </Route>
           <Route path="/task-tracker" element={<ProtectedRoutes><TeamsLayout/></ProtectedRoutes>}>
             <Route path="created" element={<CreatedTeams />}>
-              <Route path=":teamId" element={<LeaderTask/>}>
-                <Route path="create" element={<CreateTask/>}/>
+              <Route path=":teamId" element={<GenLayout/>}>
+                <Route index element={<LeaderTask/>}/>
+                <Route path="create" element={<CreateTask/>}/>                
+                <Route path=":task" element={<DedicatedTaskL/>}/>               
+                <Route path="assign" element={<AddTask/>}/>               
               </Route>
             </Route>
             <Route path="createteam" element={<CreateForm />} />

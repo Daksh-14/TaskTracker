@@ -40,7 +40,7 @@ const CreatedTeams = () => {
             <div className="Teams-flex-container">
               
               { teams.length>0 ? teams.map((team) => (
-                <TeamCard key={team.id} TeamName={team.teamname} TeamLeader="You" created={true} />
+                <TeamCard key={team.id} link={team.id} TeamName={team.teamname} TeamLeader="You" created={true} />
               )) : <p>You haven't created any Teams </p>}
             </div>
           </div>

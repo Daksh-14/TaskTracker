@@ -47,6 +47,7 @@ router
     .route('/login')
     .post(async(req,res)=>{
         try{
+            console.log(req.body)
             const { email, password } = req.body.formData;
 
             const user = await db.query('SELECT * FROM users WHERE email=$1', [email]);
@@ -100,6 +101,7 @@ router
     .get((req, res) => {
         const accessToken = req.cookies.accessToken;
         const refreshToken = req.cookies.refreshToken;
+        console.log(refreshToken)
         if (!refreshToken) {
           return res.status(401).json({ isLoggedIn: false });
         }

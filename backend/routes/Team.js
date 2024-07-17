@@ -4,7 +4,7 @@ import { authenticate } from "../middleware/authenticate.js";
 import { v4 as uuidv4 } from "uuid";
 import { JWT_SECRET, JWT_REFRESH_SECRET, JWT_EXPIRATION, JWT_REFRESH_EXPIRATION } from '../config.js';
 
-const router=express.Router();
+const router=express.Router(); 
 
 router
     .route('/create')
@@ -13,7 +13,8 @@ router
         const user=req.user;
         try{
             const teamCode=uuidv4();
-            await db.query('Insert into teams (TeamName,teamleader,joincode) values($1,$2,$3)',[teamName,user,teamCode]);
+            const dt=await db.query('Insert into teams (TeamName,joincode) values($1,$2,$3)',[teamName,teamCode]);
+            await db.query('Insert into teamleader (userid,teamid) values($1,$2,$3)',[user,dt.id]);
             res.status(201).json({message:"Team formed successfully"});
         }
         catch(error){
@@ -21,7 +22,7 @@ router
         }
     })
 
-    router
+router
     .route('/all/joined')
     .get(authenticate, async (req, res) => {
       const user = req.user;
@@ -48,8 +49,8 @@ router
         try{
             const teams = await db.query(
                 `SELECT *
-                 FROM teams  
-                 WHERE teamleader = $1`,
+                 FROM teams join teamleader on teams.id=teamleader.teamid
+                 WHERE teamleader.userid = $1`,
                 [user]
             );
             res.status(200).json({teams:teams.rows});
@@ -106,6 +107,50 @@ router
         catch(error){
             console.log(error)
             res.status(500).json({message:"Can't proceed your request. Please try again."} );
+        }
+    }) 
+
+router
+    .route('/:id/member')
+    .get(authenticate,async(req,res)=>{
+        console.log(req.params.id)
+        const id=parseInt(req.params.id);
+        try{
+            const data=await db.query(`Select users.id,users.firstname,users.lastname,users.email from teammember 
+                join teams on teams.id=teammember.teamid 
+                join users on users.id=teammember.userid
+                where teams.id=$1`,[id]);
+        
+            const data2=await db.query(`Select users.id,users.firstname,users.lastname,users.email from teamleader 
+                    join teams on teams.id=teamleader.teamid 
+                    join users on users.id=teamleader.userid
+                    where teams.id=$1`,[id]);
+            const combinedData = [...data.rows, ...data2.rows];
+            res.status(200).json({members:combinedData});
+        }
+        catch(error){
+            console.log(error);
+            res.status(400).json({message:"Please try again"});
+        }
+    })
+   
+router
+    .route('/assigned')
+    .post(authenticate,async(req,res)=>{
+        console.log("hafbhjfb")
+        const {taskId}=req.body;
+        try{
+            const data=await db.query(`Select userid from taskassign where taskid=$1`,[taskId]);;
+            console.log(data.rows)
+            let common=[];
+            data.rows.forEach(e => {
+                common.push(e.userid);
+            });
+            res.status(200).json(common);
+        }
+        catch(error){
+            console.log(error);
+            res.status(400).json({message:"Please try again"});
         }
     })
 

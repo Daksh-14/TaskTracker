@@ -11,15 +11,15 @@ const router = express.Router();
 router
   .route('/:id/create')
   .post(authenticate, upload.array('files', 10), async (req, res) => {
+    console.log(req.body)
     const user = req.user;
     const teamId=parseInt(req.params.id);
-    const { title, description } = req.body.formData;
-    const files = req.formData.files;
-    console.log(user)
-    console.log(teamId);
-    // Check if user is a team leader
-    const teamLeaderCheck = await db.query('SELECT * FROM teams WHERE id=$1 AND teamleader=$2', [teamId, user]);
-
+    const { title ,description ,dueDate ,links} = req.body;
+    const files = req.files;
+    const teamLeaderCheck = await db.query('SELECT * FROM teamleader WHERE teamid=$1 AND userid=$2', [teamId, user]);
+    let rd=new Date();
+    rd=rd.toISOString().slice(0,10);
+    let dd=dueDate.slice(0,10);
     if (teamLeaderCheck.rowCount === 0) {
       return res.status(403).json({ message: 'You are not authorized to create tasks for this team.' });
     }
@@ -30,22 +30,20 @@ router
         for (const file of files) {
           const uploadedFile = await uploadfiles(file.path);
           if (uploadedFile) {
-            fileUrls.push(uploadedFile);
+            fileUrls.push(uploadedFile.url);
           }
         }
       }
-      console.log(JSON.stringify(fileUrls));
-      console.log(title);
-      console.log(description);
-      console.log(teamId);
-      console.log(fileUrls);
 
-      await db.query(
-        'INSERT INTO tasks (title, description, teamId, fileUrls) VALUES ($1, $2, $3, $4)',
-        [title, description, teamId, JSON.stringify(fileUrls)]
+      const result = await db.query(
+        'INSERT INTO tasks (title, description, teamId, fileUrls, assigndate, duedate, createdby, links) VALUES ($1, $2, $3, $4, $5, $6, $7,$8) RETURNING id',
+        [title, description, teamId, JSON.stringify(fileUrls), rd, dd, user,JSON.stringify(links)]
       );
-
-      res.status(201).json({ message: 'Task created successfully.' });
+    
+      // The ID of the newly inserted task
+      const newTaskId = result.rows[0].id;
+      
+      res.status(201).json({id:newTaskId,user});
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Can't proceed your request. Please try again later." });
@@ -53,18 +51,38 @@ router
   });
 
 router
-    .route('/:id/addtask')
+    .route('/addtask')
     .post(authenticate,async(req,res)=>{
-        const {array,taskid}=req.body;
-        const id=req.params.id
+        const {uid,taskid}=req.body;
         try{
-            for(const uid of array){
-                await db.query('Insert into membertasks(userid,teamid,taskId) values($1,$2,$3)',[uid,id,taskid]);
-            }
-            res.status(200).json({message:"Task assignment successful"});
+           
+          await db.query('Insert into taskassign(userid,taskId) values($1,$2)',[uid,taskid]);
+            
+          res.status(200).json({message:"Task assignment successful"});
         }catch(error){
             res.status(500).json({message:"Task assignment failed"});
         }
     })  
 
+router
+    .route('/:id/all')
+    .get(authenticate,async(req,res)=>{
+      const teamid=parseInt(req.params.id);
+      const user=req.user;
+      const data=await db.query(`Select taskid,title,duedate,firstname,lastname from taskassign join tasks on tasks.id=taskassign.taskid join users on users.id=tasks.createdby
+          where taskassign.userid=$1 and tasks.teamid=$2`,[user,teamid]);
+          console.log(data.rows);
+      res.status(200).json(data.rows);
+    })
+    
+router
+    .route('/:id')
+    .get(authenticate,async(req,res)=>{
+      const taskid=parseInt(req.params.id);
+      const user=req.user;
+      const data=await db.query(`Select * from taskassign join tasks on tasks.id=taskassign.taskid join users on users.id=tasks.createdby
+          where taskid=$1`,[taskid]);
+          console.log(data.rows);
+      res.status(200).json(data.rows);
+    })
 export default router;

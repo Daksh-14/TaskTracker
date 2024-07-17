@@ -1,61 +1,52 @@
 import React, { useEffect, useState } from "react";
-import { useParams,Outlet,useLocation } from "react-router-dom";
+import { useParams,Link } from "react-router-dom";
 import axiosInstance from "../config/axiosconfig";
-// import TaskCard from "../components/TaskCard";
-// import TaskForm from "../components/TaskForm";
-// import "../style/Tasks.css";
+import CreateTask from "./CreateTask";
+import TaskCard from "../components/TaskCard.jsx";
+import '../style/LeaderTask.css'
 
 const LeaderTask = () => {
-//   const { teamId } = useParams();
-//   const [tasks, setTasks] = useState([]);
-//   const [loading, setLoading] = useState(true);
+  const { teamId } = useParams();
+  const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-//   useEffect(() => {
-//     const fetchTasks = async () => {
-//       try {
-//         const response = await axiosInstance.get(`/team/${teamId}/tasks`);
-//         setTasks(response.data.tasks);
-//       } catch (error) {
-//         console.error("Error fetching tasks", error);
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const response = await axiosInstance.get(`/task/${teamId}/all`);
+        console.log(response.data);
+        setTasks(response.data);
+      } catch (error) {
+        console.error("Error fetching tasks", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-//     fetchTasks();
-//   }, [teamId]);
+    fetchTasks();
+  }, [teamId]);
 
   return (
-    // <div className="Tasks-outer">
-    //   {loading ? (
-    //     <h1>Loading...</h1>
-    //   ) : (
-    //     <div className="Tasks-container">
-    //       <h1 className="header">Tasks for Team {teamId}</h1>
-    //       <TaskForm teamId={teamId} setTasks={setTasks} />
-    //       <div className="Tasks-flex-container">
-    //         {tasks.length > 0 ? (
-    //           tasks.map((task) => (
-    //             <TaskCard key={task.id} title={task.title} description={task.description} />
-    //           ))
-    //         ) : (
-    //           <p>No tasks found</p>
-    //         )}
-    //       </div>
-    //     </div>
-    //   )}
-    // </div>
-    <div>
-    {location.pathname.includes("/create") ? (
-      <Outlet />
-    ) : (
-      <>
-        <h2>Team ID: {teamId}</h2>
-        {/* Additional content if needed */}
-        <Outlet />
-      </>
-    )}
-  </div>
+    <div className="Tasks-outer">
+      {loading ? (
+        <h1>Loading...</h1>
+      ) : (
+        <div className="Tasks-container">
+          <div className="Heading"><h1 className="header">Tasks for Team {teamId}</h1></div>
+          <div className="Button"><Link to='create'><button>Create Task</button></Link></div>
+          <div className="Tasks-flex-container">
+            {tasks? (
+              tasks.map((task) => (
+                <TaskCard key={task.taskid} title={task.title} taskid={task.taskid} firstname={task.firstname} lastname={task.lastname} duedate={task.duedate} />
+              ))
+            ) : (
+              <p>No tasks found</p>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+    
   );
 };
 
