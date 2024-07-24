@@ -4,7 +4,7 @@ import { authenticate } from "../middleware/authenticate.js";
 import { v4 as uuidv4 } from "uuid";
 import { JWT_SECRET, JWT_REFRESH_SECRET, JWT_EXPIRATION, JWT_REFRESH_EXPIRATION } from '../config.js';
 
-const router=express.Router(); 
+const router=express.Router();
 
 router
     .route('/create')
@@ -28,15 +28,13 @@ router
       const user = req.user;
       try {
         const teams = await db.query(
-          `SELECT teams.id,teams.TeamName, users.firstName AS fName, users.lastName AS lName
-           FROM teamMember 
-           JOIN teams ON teamMember.teamId = teams.id 
-           JOIN users ON teams.teamLeader = users.id
-           WHERE teamMember.userId = $1`,
+          `select teamid,teamname from teams join teammember on teammember.teamid=teams.id where userid=$1`, 
           [user]
         );
+        console.log(teams.rows)
         return res.status(200).json({ teams: teams.rows });
       } catch (error) {
+        console.log(error)
         res.status(500).json({ message: "Can't proceed your request.\n Please try again later." });
       }
     });
@@ -138,9 +136,10 @@ router
     .route('/assigned')
     .post(authenticate,async(req,res)=>{
         console.log("hafbhjfb")
-        const {taskId}=req.body;
+        const {task}=req.body;
+        console.log(task);
         try{
-            const data=await db.query(`Select userid from taskassign where taskid=$1`,[taskId]);;
+            const data=await db.query(`Select userid from taskassign where taskid=$1`,[task]);;
             console.log(data.rows)
             let common=[];
             data.rows.forEach(e => {

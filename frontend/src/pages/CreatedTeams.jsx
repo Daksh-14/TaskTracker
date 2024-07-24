@@ -33,14 +33,14 @@ const CreatedTeams = () => {
         <>
         {location.pathname === "/task-tracker/created" && (
           <div className="Team-container">
-            <div>
-              <Link to="../createteam"><button>Join a team</button></Link>
+            <div className="HeadingCreate">
+              <Link to="../createteam"><button>Create a team</button></Link>
             </div>
             <h1 className="header">Teams You Have Created</h1>
             <div className="Teams-flex-container">
               
               { teams.length>0 ? teams.map((team) => (
-                <TeamCard key={team.id} link={team.id} TeamName={team.teamname} TeamLeader="You" created={true} />
+                <TeamCard key={team.id} link={team.id} TeamName={team.teamname} Role="Leader" created={true} />
               )) : <p>You haven't created any Teams </p>}
             </div>
           </div>

@@ -5,8 +5,7 @@ import { useParams } from 'react-router-dom';
 const AddTask = (props) => {
   const [members, setMembers] = useState([]);
   const [selectedMembers, setSelectedMembers] = useState([]);
-  const { teamId } = useParams();
-  const taskId = 1;
+  const { teamId ,task} = useParams();
   const [searchMode, setSearchMode] = useState('name'); // 'name' or 'email'
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -16,7 +15,7 @@ const AddTask = (props) => {
       try {
         const response = await axiosInstance.get(`team/${teamId}/member`);
         const arr=response.data.members;
-        const { data } = await axiosInstance.post('team/assigned', { taskId });
+        const { data } = await axiosInstance.post('team/assigned', { task });
         duplicate=data;
         const inimem = new Set(duplicate);
         const mem=arr.filter(m=>(!inimem.has(m.id)));

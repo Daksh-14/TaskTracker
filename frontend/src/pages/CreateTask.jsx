@@ -4,12 +4,12 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Editor from '../components/Editor';
 import '../style/CreateTask.css';
-import { useParams } from 'react-router-dom';
+import { useParams ,useNavigate} from 'react-router-dom';
 
 const CreateTask = () => {
   const [formData, setFormData] = useState({
     title: '',
-    description: '',
+    description: 'Add task description here',
     dueDate: new Date(),
     files: [],
     links: []
@@ -17,7 +17,7 @@ const CreateTask = () => {
   const fileInputRef = useRef(null);
   const [linkInput, setLinkInput] = useState('');
   const { teamId } = useParams();
-
+  const navigate=useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -52,6 +52,7 @@ const CreateTask = () => {
       });
 
       fileInputRef.current.value = null;
+      navigate('../');
     } catch (error) {
       console.error('Error adding task', error);
     }
@@ -104,7 +105,7 @@ const CreateTask = () => {
   return (
     <div className="CreateTask_outer">
       <div className="CreateTask_layout">
-        <h1>Add a New Task</h1>
+        <div className='Createtask_heading'><h1>Add a New Task</h1></div>
         <form onSubmit={handleSubmit}>
           <div className="CreateTask_data">
             <div className="CreateTask_title">
@@ -124,7 +125,7 @@ const CreateTask = () => {
               <Editor formData={formData} setFormData={setFormData} />
             </div>
             <div className="CreateTask_date">
-              <label htmlFor="dueDate">Due Date</label>
+              <label htmlFor="dueDate">Due Date :</label>
               <DatePicker
                 selected={formData.dueDate}
                 onChange={(date) => onChangeHandler('dueDate', date)}
@@ -132,14 +133,16 @@ const CreateTask = () => {
               />
             </div>
             <div className="CreateTask_files">
-              <label htmlFor="files">Upload Files</label>
-              <input type="file" name="files" multiple onChange={handleFileChange} ref={fileInputRef} />
-              <div>
+              <div >
+                <label htmlFor="files">Upload Files</label>
+                <input type="file" name="files" multiple onChange={handleFileChange} ref={fileInputRef} />
+              </div>
+              <div className='files_inputed'>
                 {
                   formData.files.map((file, index) => (
                     <div key={index}>
                       <span>{file.name}</span>
-                      <button type="button" onClick={() => handleRemoveFile(index)}>Remove</button>
+                      <button type="button" className="Createtask_Button" onClick={() => handleRemoveFile(index)}>Remove</button>
                     </div>
                   ))
                 }
@@ -153,18 +156,18 @@ const CreateTask = () => {
                 onChange={(e) => setLinkInput(e.target.value)}
                 placeholder="Enter URL and click Add"
               />
-              <button type="button" onClick={handleAddLink}>Add Link</button>
+              <button type="button" className="Createtask_Button" onClick={handleAddLink}>Add Link</button>
               <div className="links_preview">
                 {formData.links.map((link, index) => (
                   <div key={index} className="link_item">
                     <a href={link} target="_blank" rel="noopener noreferrer">{link}</a>
-                    <button type="button" onClick={() => handleRemoveLink(index)}>Remove</button>
+                    <button type="button" className="Createtask_Button" onClick={() => handleRemoveLink(index)}>Remove</button>
                   </div>
                 ))}
               </div>
             </div>
             <div className="button_container">
-              <button className="task_submit" type="submit">Add Task</button>
+              <button className="Createtask_Button" type="submit">Add Task</button>
             </div>
             <div>
               

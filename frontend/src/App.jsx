@@ -32,12 +32,21 @@ function App() {
               <Route path=":teamId" element={<GenLayout/>}>
                 <Route index element={<LeaderTask/>}/>
                 <Route path="create" element={<CreateTask/>}/>                
-                <Route path=":task" element={<DedicatedTaskL/>}/>               
-                <Route path="assign" element={<AddTask/>}/>               
+                <Route path=":task" element={<GenLayout/>}>
+                  <Route index element={<DedicatedTaskL/>}/>
+                  <Route path='edit' element={<AddTask/>}/>
+                  <Route path="assign" element={<AddTask/>}/>
+                </Route>               
+                               
               </Route>
             </Route>
             <Route path="createteam" element={<CreateForm />} />
-            <Route path="joined" element={<JoinedTeams />}/>
+            <Route path="joined" element={<JoinedTeams />}>
+                <Route path=":teamId" element={<GenLayout/>}>
+                  <Route index element={<LeaderTask/>}/>               
+                  <Route path=":task" element={<DedicatedTaskL/>}/>                             
+                </Route>
+            </Route>
             <Route path="jointeam" element={<JoinForm />} />
             
           </Route>

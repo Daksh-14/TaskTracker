@@ -3,7 +3,14 @@
     color: black;
     width: 35px;
     height: 35px;
+    font-size: 1.1rem;
 }
+
+.button-group{
+    display: flex;
+    gap:0.5vw;
+}
+
 
 .button-group .is-active{
     background-color: rgb(189, 187, 211);

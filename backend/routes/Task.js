@@ -4,7 +4,7 @@ import { authenticate } from "../middleware/authenticate.js";
 import { uploadfiles } from "../cloudinary.js";
 import { storage } from "../middleware/multerUpload.js";
 import multer from 'multer';
-    
+
 const upload = multer({ storage: storage });
 const router = express.Router();
 
@@ -62,7 +62,7 @@ router
         }catch(error){
             res.status(500).json({message:"Task assignment failed"});
         }
-    })  
+    }) 
 
 router
     .route('/:id/all')

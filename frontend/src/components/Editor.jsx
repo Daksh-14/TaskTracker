@@ -98,7 +98,8 @@ const Editor = ({ formData, setFormData }) => {
   return (
     <div className="textEditor">
       <MenuBar editor={editor} />
-      <EditorContent editor={editor} />
+      <div style={{height:'2vh'}}></div>
+      <EditorContent className='edit_box' editor={editor} />
     </div>
   );
 };

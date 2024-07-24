@@ -43,7 +43,7 @@ const JoinForm = () => {
         <h1>Loading...</h1>
       ) : (
         <div className="form_layout">
-          <div><h1>Join</h1></div>
+          <div><p>Join a team</p></div>
           <form onSubmit={handleSubmit}>
             <div className="form_data">
               <div className="form_value">

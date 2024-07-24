@@ -18,3 +18,34 @@
     flex-direction: column;
     gap: 5vh;
 }
+
+.HeadingCreate{
+    width: 80vw;
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 3vh;
+}
+
+.HeadingCreate button{
+    min-width: 10vw;
+    height: 4vh;
+    font-size: 1.2rem;
+}
+
+@media screen and (max-width:800px) {
+    .header{
+        font-size: 1.8rem;
+    }
+    .HeadingCreate button{
+        font-size: 1.1rem;
+    }
+}
+
+@media screen and (max-width:400px) {
+    .header{
+        font-size: 1.5rem;
+    }
+    .HeadingCreate button{
+        font-size: 0.9rem;
+    }
+}

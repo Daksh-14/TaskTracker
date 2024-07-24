@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams,Link } from "react-router-dom";
+import { useParams,Link, useLocation } from "react-router-dom";
 import axiosInstance from "../config/axiosconfig";
 import CreateTask from "./CreateTask";
 import TaskCard from "../components/TaskCard.jsx";
@@ -9,7 +9,7 @@ const LeaderTask = () => {
   const { teamId } = useParams();
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const location=useLocation();
   useEffect(() => {
     const fetchTasks = async () => {
       try {
@@ -33,7 +33,7 @@ const LeaderTask = () => {
       ) : (
         <div className="Tasks-container">
           <div className="Heading"><h1 className="header">Tasks for Team {teamId}</h1></div>
-          <div className="Button"><Link to='create'><button>Create Task</button></Link></div>
+          {location.pathname.includes('created') && <div className="Button"><Link to='create'><button>Create Task</button></Link></div>}
           <div className="Tasks-flex-container">
             {tasks? (
               tasks.map((task) => (

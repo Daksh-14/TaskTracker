@@ -2,7 +2,10 @@
 .TaskCard_outer {
     width: 84vw;
     height:12vh;
-    background-color: #f9f9f9;
+    /* background-color: #e3e5f3; */
+    background-image: url('../assets/task_background.png');
+    background-size: cover;
+    background-repeat: no-repeat;
     border: 2px solid #ddd;
     border-radius: 8px;
     box-shadow: 2px 2px 4px rgba(109, 123, 177, 0.671);
@@ -42,6 +45,11 @@
   .TaskCard_name {
     font-size: 1rem;
     color: #777;
+    white-space: nowrap; /* Prevent title from wrapping */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 60vw;
+
   }
   
   .TaskCard_details2 {
@@ -56,10 +64,16 @@
     .TaskCard_title {
         font-size: 1.05rem;
     }
+    .TaskCard_details2{
+      font-size: 0.9rem;
+    }
   }
   @media screen and (max-width: 530px) {
     .TaskCard_title {
         max-width: 50vw;
         font-size: 1rem;
+    }
+    .TaskCard_name{
+      max-width: 45vw;
     }
   }

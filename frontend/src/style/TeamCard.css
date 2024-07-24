@@ -36,3 +36,21 @@ a{
     height: 20%;
     font-size: 1.2rem;
 }
+
+@media screen and (max-width: 900px) {
+    .Card_bg_text{
+        font-size: 1.15rem;
+    }
+    .TeamCreated_icon{
+        font-size: 1.1rem;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .Card_bg_text{
+        font-size: 1.05rem;
+    }
+    .TeamCreated_icon{
+        font-size: 1rem;
+    }
+}

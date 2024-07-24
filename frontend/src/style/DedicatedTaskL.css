@@ -1,0 +1,90 @@
+.task-detail{
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2vh;
+}
+
+.task-button-top{
+    width: 90%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.task-button-top button{
+    min-width: 8vw;
+    height:4vh;
+    font-size: 1rem;
+    border-radius: 10px;
+    border-width: 1px;
+    background-color: rgb(225, 234, 243);
+}
+
+.task-heading{
+    width: 80vw;
+    display: flex;
+    justify-content: center;
+    margin-top: 3vh;
+    font-size: 1.25rem;
+}
+
+.task-flex{
+    width: 90vw;
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.2rem;
+}
+
+.task-data{
+    width: 60vw;
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+    margin-bottom: 4vh;
+}
+
+.task-meta{
+    display: flex;
+    flex-direction: column;
+    gap: 1vh;
+}
+
+.file-buttons{
+    display: flex;
+    gap: 1vw;
+}
+
+.task-fileClose{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1vh;
+}
+
+.task-flex button{
+    min-width: 11vw;
+    height: 5vh;
+    font-size: 1rem;
+    border-radius: 10px;
+    border-width: 1px;
+    background-color: rgb(225, 234, 243);
+}
+
+.file-links{
+    display: flex;
+    flex-direction: column;
+}
+
+.task-detail{
+    background-color: rgb(223, 239, 239);
+}
+
+@media screen and (max-width:1000px) {
+    .task-flex{
+        flex-direction: column;
+    }
+    .task-data{
+        width: 100%;
+    }
+}
