@@ -31,7 +31,7 @@ const CreatedTeams = () => {
         <h1>Loading...</h1>
       ) : (
         <>
-        {location.pathname === "/task-tracker/created" && (
+        (
           <div className="Team-container">
             <div className="HeadingCreate">
               <Link to="../createteam"><button>Create a team</button></Link>
@@ -44,8 +44,7 @@ const CreatedTeams = () => {
               )) : <p>You haven't created any Teams </p>}
             </div>
           </div>
-        )}
-        <Outlet/>
+        )
         </>
       )}
     </div>

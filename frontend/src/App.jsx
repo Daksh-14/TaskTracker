@@ -16,6 +16,7 @@ import CreateTask from "./pages/CreateTask.jsx";
 import AddTask from "./components/AddTask.jsx";
 import GenLayout from "./GenLayout.jsx";
 import DedicatedTaskL from "./pages/DedicatedTaskL.jsx";
+import Calendar from "./pages/MyCalender.jsx";
 
 function App() {
   return (
@@ -29,7 +30,7 @@ function App() {
           </Route>
           <Route path="/task-tracker" element={<ProtectedRoutes><TeamsLayout/></ProtectedRoutes>}>
             <Route path="created" element={<CreatedTeams />}>
-              <Route path=":teamId" element={<GenLayout/>}>
+              {/* <Route path=":teamId" element={<GenLayout/>}>
                 <Route index element={<LeaderTask/>}/>
                 <Route path="create" element={<CreateTask/>}/>                
                 <Route path=":task" element={<GenLayout/>}>
@@ -38,17 +39,26 @@ function App() {
                   <Route path="assign" element={<AddTask/>}/>
                 </Route>               
                                
-              </Route>
+              </Route> */}
+            </Route>
+            <Route path="team" element={<GenLayout/>}>
+              <Route path=":teamId" element={<LeaderTask/>}/>
+              <Route path="create" element={<CreateTask/>}/>
+            </Route>
+            <Route path="task" element={<GenLayout/>}>
+              <Route path=":task" element={<DedicatedTaskL/>}/>
+              <Route path='edit' element={<AddTask/>}/>
+              <Route path="assign" element={<AddTask/>}/>
             </Route>
             <Route path="createteam" element={<CreateForm />} />
             <Route path="joined" element={<JoinedTeams />}>
-                <Route path=":teamId" element={<GenLayout/>}>
+                {/* <Route path=":teamId" element={<GenLayout/>}>
                   <Route index element={<LeaderTask/>}/>               
                   <Route path=":task" element={<DedicatedTaskL/>}/>                             
-                </Route>
+                </Route> */}
             </Route>
             <Route path="jointeam" element={<JoinForm />} />
-            
+            <Route path="calender" element={<Calendar/>}/>
           </Route>
         </Routes>
       </BrowserRouter>

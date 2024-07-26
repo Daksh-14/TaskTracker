@@ -10,6 +10,7 @@ const LeaderTask = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const location=useLocation();
+  const [isLeader,setIsLeader]=useState(false);
   useEffect(() => {
     const fetchTasks = async () => {
       try {
@@ -25,7 +26,19 @@ const LeaderTask = () => {
 
     fetchTasks();
   }, [teamId]);
-
+  useEffect(()=>{
+    const checkStatus=async()=>{
+      try{
+        const response=await axiosInstance.get(`auth/check/${teamId}`);
+        console.log(response.data);
+        setIsLeader(response.data);
+      }
+      catch(error){
+        console.log(error)
+      }
+    }
+    checkStatus();
+  },[teamId])
   return (
     <div className="Tasks-outer">
       {loading ? (
@@ -33,7 +46,7 @@ const LeaderTask = () => {
       ) : (
         <div className="Tasks-container">
           <div className="Heading"><h1 className="header">Tasks for Team {teamId}</h1></div>
-          {location.pathname.includes('created') && <div className="Button"><Link to='create'><button>Create Task</button></Link></div>}
+          {isLeader && <div className="Button"><Link to='create'><button>Create Task</button></Link></div>}
           <div className="Tasks-flex-container">
             {tasks? (
               tasks.map((task) => (

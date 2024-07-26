@@ -8,12 +8,16 @@ const DedicatedTaskL = () => {
   const [data, setData] = useState({});
   const { teamId, task } = useParams();
   const [iframeSrc, setIframeSrc] = useState(null);
-
+  const [isLeader,setIsLeader]=useState(false);
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axiosInstance.get(`task/${task}`);
-        setData(response.data[0]);
+        const taskData = response.data[0];
+      
+      taskData.duedate = new Date(taskData.duedate).toLocaleString();
+      taskData.assigndate = new Date(taskData.assigndate).toLocaleString();
+      setData(taskData);
       } catch (err) {
         console.log(err);
       }
@@ -21,6 +25,19 @@ const DedicatedTaskL = () => {
     fetchData();
   }, [task]);
 
+  useEffect(()=>{
+    const checkStatus=async()=>{
+      try{
+        const response=await axiosInstance.get(`auth/check/${teamId}`);
+        console.log(response.data);
+        setIsLeader(response.data);
+      }
+      catch(error){
+        console.log(error)
+      }
+    }
+    checkStatus();
+  },[teamId])
   const handleButtonClick = (url) => {
     setIframeSrc(url);
   };
@@ -35,8 +52,8 @@ const DedicatedTaskL = () => {
   return (
     <div className="task-detail">
       <div className='task-heading'><h2>{data.title}</h2></div>
-      {location.pathname.includes('created') && <div className='task-button-top'><Link to='edit'><button>Edit</button></Link></div>}
-      {location.pathname.includes('created') && <div className='task-button-top'><Link to='assign'><button>Assign</button></Link></div>}
+      {isLeader && <div className='task-button-top'><Link to='edit'><button>Edit</button></Link></div>}
+      {isLeader && <div className='task-button-top'><Link to='assign'><button>Assign</button></Link></div>}
       <div className='task-flex'>
         <div className='task-data'>
           {data.description && <div className="task-description">{parse(data.description)}</div>}
@@ -72,8 +89,8 @@ const DedicatedTaskL = () => {
         {
           data.assigndate && data.duedate &&
             <div className="task-meta">
-              <p>Assigned Date: {data.assigndate.slice(0,10)}</p>
-              <p>Due Date: {data.duedate.slice(0,10)}</p>
+              <p>Assigned Date: {data.assigndate}</p>
+              <p>Due Date: {data.duedate}</p>
               <p>Created by: {data.firstname} {data.lastname}</p>
             </div>
         }

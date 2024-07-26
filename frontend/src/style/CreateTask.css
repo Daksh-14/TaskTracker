@@ -3,6 +3,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: aliceblue;
 }
 
 .CreateTask_outer label{
@@ -11,9 +12,7 @@
 
 .CreateTask_layout{
     width: 80vw;
-    height: 90vh;
-    background-color: aliceblue;
-
+    min-height: 90vh;
 }
 
 .Createtask_heading{
@@ -52,7 +51,18 @@
 
 .CreateTask_date{
     display: flex;
+    flex-direction: column;
     margin-bottom: 3vh;
+    gap: 1vh;
+}
+
+.Date_value{
+    display: flex;
+    gap:1vw;
+}
+
+.time-input{
+    width: 3vw;
 }
 
 .CreateTask_date>label{
@@ -112,5 +122,8 @@
     }
     .CreateTask_layout{
         width: 90vw;
+    }
+    .time-input{
+        width: 5vw;
     }
 }
