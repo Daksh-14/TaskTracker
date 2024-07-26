@@ -130,5 +130,21 @@ router
           res.status(500).json({ message: 'Error logging out, please try again' });
         }
       });
-      
+     
+router.
+      route(`/check/:id`)
+      .get(authenticate,async(req,res)=>{
+        const user=req.user;
+        const teamid=req.params.id;
+        try{
+            const result=await db.query(`Select * from teamleader where userid=$1 and teamid=$2`,[user,teamid])
+            let ans=(result.rowCount>0);
+            res.status(200).json(ans);
+        }
+        catch(err){
+            console.log(err);
+            res.status(500).json({message:'Error checking status'});
+        }
+      })
+
 export default router;

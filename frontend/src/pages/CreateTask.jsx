@@ -12,7 +12,8 @@ const CreateTask = () => {
     description: 'Add task description here',
     dueDate: new Date(),
     files: [],
-    links: []
+    links: [],
+    time:''
   });
   const fileInputRef = useRef(null);
   const [linkInput, setLinkInput] = useState('');
@@ -23,10 +24,13 @@ const CreateTask = () => {
 
     // Create a FormData object
     const data = new FormData();
+    let date=formData.dueDate;
+    date.setHours(formData.hours,formData.min,0);
+    date=date.toUTCString();
     data.append('title', formData.title);
     data.append('description', formData.description);
-    data.append('dueDate', formData.dueDate.toISOString());
-
+    data.append('dueDate', date);
+    console.log(date);
     formData.files.forEach(file => {
       data.append('files', file);
     });
@@ -48,7 +52,9 @@ const CreateTask = () => {
         description: '',
         dueDate: new Date(),
         files: [],
-        links: []
+        links: [],
+        hours:23,
+        min:59
       });
 
       fileInputRef.current.value = null;
@@ -59,6 +65,14 @@ const CreateTask = () => {
   };
 
   const onChangeHandler = (name, value) => {
+    if(name=='hours'){
+      if(value<0)value=0;
+      if(value>23)value=23;
+    }
+    if(name=='min'){
+      if(value<0)value=0;
+      if(value>59)value=59;
+    }
     setFormData((prevData) => ({
       ...prevData,
       [name]: value
@@ -101,7 +115,7 @@ const CreateTask = () => {
       links: newLinks
     }));
   };
-
+  
   return (
     <div className="CreateTask_outer">
       <div className="CreateTask_layout">
@@ -125,12 +139,22 @@ const CreateTask = () => {
               <Editor formData={formData} setFormData={setFormData} />
             </div>
             <div className="CreateTask_date">
-              <label htmlFor="dueDate">Due Date :</label>
-              <DatePicker
-                selected={formData.dueDate}
-                onChange={(date) => onChangeHandler('dueDate', date)}
-                className="task_input"
-              />
+              <div className='Date_value'>
+                <label htmlFor="dueDate">Due Date :</label>
+                <DatePicker
+                  selected={formData.dueDate}
+                  onChange={(date) => onChangeHandler('dueDate', date)}
+                  className="task_input"
+                />
+              </div>
+              <div className='Date_value'>
+                <label htmlFor="hours">Hours :</label>
+                <input className="time-input" name='hours' type='number' value={formData.hours} required onChange={(e) => onChangeHandler('hours', e.target.value)} placeholder='23'/>
+              </div>
+              <div className='Date_value'>
+                <label htmlFor="min">Min :</label>
+                <input className="time-input" name='min' type='number' value={formData.min} required onChange={(e) => onChangeHandler('min', e.target.value)} placeholder='59'/>
+              </div>
             </div>
             <div className="CreateTask_files">
               <div >

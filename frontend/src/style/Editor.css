@@ -9,6 +9,7 @@
 .button-group{
     display: flex;
     gap:0.5vw;
+    flex-wrap: wrap;
 }
 
 

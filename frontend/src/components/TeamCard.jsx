@@ -7,7 +7,7 @@ import "../style/TeamCard.css";
 const TeamCard = ({link, TeamName, Role, created }) => {
   return (
     <div className="TeamCard_outer">
-      <Link to={`${link}`}>
+      <Link to={`../team/${link}`}>
         <div className="TeamCard_bg">
           <div className="Card_bg_text">
             <p>Team Name : {TeamName}</p>

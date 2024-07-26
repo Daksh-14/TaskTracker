@@ -5,7 +5,7 @@ import "../style/TaskCard.css";
 const TaskCard = ({taskid,title,duedate,firstname,lastname}) => {
   return (
     <div className="TaskCard_outer">
-        <Link to={`${taskid}`} className="TaskCard-link">
+        <Link to={`../../task/${taskid}`} className="TaskCard-link">
             <div className="TaskCard-cover">
             <div className="TaskCard_details1">
                 <div className="TaskCard_title">{title}</div>

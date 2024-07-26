@@ -18,8 +18,8 @@ router
     const files = req.files;
     const teamLeaderCheck = await db.query('SELECT * FROM teamleader WHERE teamid=$1 AND userid=$2', [teamId, user]);
     let rd=new Date();
-    rd=rd.toISOString().slice(0,10);
-    let dd=dueDate.slice(0,10);
+    rd=rd.toUTCString();
+    let dd=dueDate;
     if (teamLeaderCheck.rowCount === 0) {
       return res.status(403).json({ message: 'You are not authorized to create tasks for this team.' });
     }
@@ -69,20 +69,47 @@ router
     .get(authenticate,async(req,res)=>{
       const teamid=parseInt(req.params.id);
       const user=req.user;
-      const data=await db.query(`Select taskid,title,duedate,firstname,lastname from taskassign join tasks on tasks.id=taskassign.taskid join users on users.id=tasks.createdby
-          where taskassign.userid=$1 and tasks.teamid=$2`,[user,teamid]);
-          console.log(data.rows);
+      try{
+        const data=await db.query(`Select taskid,title,duedate,firstname,lastname from taskassign join tasks on tasks.id=taskassign.taskid join users on users.id=tasks.createdby
+            where taskassign.userid=$1 and tasks.teamid=$2`,[user,teamid]);
+            console.log(data.rows);
       res.status(200).json(data.rows);
+        }
+        catch(err){
+          res.status(404).json({message:"tasks retrival failed"});
+        }
     })
-    
+
+router
+    .route('/findall')
+    .get(authenticate,async(req,res)=>{
+      const user=req.user;
+      try{
+      const data=await db.query(`Select title,duedate,taskid from taskassign join tasks on tasks.id=taskassign.taskid where taskassign.userid=$1`,[user]);
+      res.status(200).json(data.rows);
+      }
+      catch(err){
+        console.log(err)
+        res.status(500).json({message:"tasks here retrival failed"});
+      }
+    })
+
 router
     .route('/:id')
     .get(authenticate,async(req,res)=>{
       const taskid=parseInt(req.params.id);
       const user=req.user;
+      try{
       const data=await db.query(`Select * from taskassign join tasks on tasks.id=taskassign.taskid join users on users.id=tasks.createdby
           where taskid=$1`,[taskid]);
           console.log(data.rows);
       res.status(200).json(data.rows);
+      }
+      catch(err){
+        res.status(404).json({message:"task retrival failed"});
+      }
     })
+
+
+
 export default router;

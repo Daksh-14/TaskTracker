@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axiosInstance from '../config/axiosconfig';
 import { useParams } from 'react-router-dom';
+import '../style/AddTask.css'
 
 const AddTask = (props) => {
   const [members, setMembers] = useState([]);
@@ -19,9 +20,9 @@ const AddTask = (props) => {
         duplicate=data;
         const inimem = new Set(duplicate);
         const mem=arr.filter(m=>(!inimem.has(m.id)));
-        console.log(arr);
-        console.log(data)
-        setMembers(mem);
+        const mem1 = mem.map((obj) => ({ ...obj, name: `${obj.firstname} ${obj.lastname}` }));
+        console.log(mem1)
+        setMembers(mem1);
       } catch (error) {
         console.log(error);
       }
@@ -44,9 +45,8 @@ const AddTask = (props) => {
     setMembers((prevMembers) => [...prevMembers, member]);
   };
   const filteredMembers = members.filter(member => {
-    const name=member.firstname+" "+member.lastname;
     if (searchMode === 'name') {
-       return name.toLowerCase().includes(searchQuery.toLowerCase());
+       return member.name.toLowerCase().includes(searchQuery.toLowerCase());
     } else {
       return member.email.toLowerCase().includes(searchQuery.toLowerCase());
     }
@@ -67,44 +67,55 @@ const AddTask = (props) => {
 
   return (
     <div className="task-assignment">
-      <div className="search-bar">
-        <label>
-          Search by:
-          <select value={searchMode} onChange={(e) => setSearchMode(e.target.value)}>
-            <option value="name">Name</option>
-            <option value="email">Email</option>
-          </select>
-        </label>
-        <input
-          type="text"
-          placeholder={`Search by ${searchMode}`}
-          value={searchQuery}
-          onChange={handleSearchChange}
-        />
-      </div>
+      <div style={{backgroundColor:"rgb(231, 231, 247)",padding:'5vh 5vw',borderRadius:"2vh",boxShadow:'0 10px 10px 0 rgba(0, 0, 0, 0.2)'} }>
+        <div className="search-bar">
+          <label>
+            Search by:
+            <select value={searchMode} onChange={(e) => setSearchMode(e.target.value)}>
+              <option value="name">Name</option>
+              <option value="email">Email</option>
+            </select>
+          </label>
+          <input
+            type="text"
+            placeholder={`Search by ${searchMode}`}
+            value={searchQuery}
+            onChange={handleSearchChange}
+            style={{fontSize:'1.05rem'}}
+          />
+        </div>
 
-      <div className="members-list">
-        <h3>All Members</h3>
-        <ul>
-          {filteredMembers.map(member => (
-            <li key={member.email}>
-              {member.name} ({member.email}) <button onClick={() => handleSelectMember(member)}>Select</button>
-            </li>
-          ))}
-        </ul>
-      </div>
+        <div className="members-list">
+          <p>All Members</p>
+          <div style={{ overflowX: 'scroll', whiteSpace: 'nowrap', maxWidth: '70%',overflowY: 'scroll', maxHeight: '100px' }}>
+            <ul>
+              {filteredMembers.map(member => (
+                <li key={member.email}>
+                  <button onClick={() => handleSelectMember(member)}><div style={{margin:'0.5vh 0.5vw',fontSize:'1.05rem'}}><div style={{ display: 'flex', alignItems: 'center' }}
+                  >Name: {member.name}</div><div style={{ display: 'flex', alignItems: 'center' }}>Email: {member.email}</div></div></button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
 
-      <div className="selected-members-list">
-        <h3>Selected Members</h3>
-        <ul>
-          {selectedMembers.map(member => (
-            <li key={member.email}>
-              {member.name} ({member.email}) <button onClick={() => handleRemoveMember(member)}>Remove</button>
-            </li>
-          ))}
-        </ul>
+        <div className="selected-members-list">
+          <p>Selected Members</p>
+          <div style={{ overflowX: 'scroll', whiteSpace: 'nowrap', maxWidth: '70%',overflowY: 'scroll', maxHeight: '100px' }}>
+          <ul>
+            {selectedMembers.map(member => (
+              <li key={member.email}>
+                <button onClick={() => handleRemoveMember(member)}><div style={{margin:'0.5vh 0.5vw'}}><div style={{ display: 'flex', alignItems: 'center' }}
+                >Name: {member.name}</div><div style={{ display: 'flex', alignItems: 'center' }}>Email: {member.email}</div></div></button>
+              </li>
+            ))}
+          </ul>
+          </div>
+        </div>
+        <div style={{width:'100%',display:'flex',justifyContent:'center'}}>
+          <button onClick={handleClick} style={{minWidth:'10vw',height:'5vh',fontSize:'1.1rem',padding:'1vh 1vw',marginTop:'2vh'}}>Assign</button>
+        </div>
       </div>
-      <button onClick={handleClick}>Assign</button>
     </div>
   );
 };
