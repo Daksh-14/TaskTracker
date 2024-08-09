@@ -2,7 +2,7 @@ import { db } from "../database/db.js";
 import express from "express";
 import { authenticate } from "../middleware/authenticate.js";
 import { v4 as uuidv4 } from "uuid";
-import { JWT_SECRET, JWT_REFRESH_SECRET, JWT_EXPIRATION, JWT_REFRESH_EXPIRATION } from '../config.js';
+import { JWT_SECRET, JWT_REFRESH_SECRET, JWT_EXPIRATION, JWT_REFRESH_EXPIRATION } from '../config.js'; 
 
 const router=express.Router();
 
@@ -21,7 +21,7 @@ router
             res.status(500).json({message:"Team formation unsuccessful"});
         }
     })
-
+ 
 router
     .route('/all/joined')
     .get(authenticate, async (req, res) => {
@@ -38,7 +38,6 @@ router
         res.status(500).json({ message: "Can't proceed your request.\n Please try again later." });
       }
     });
-  
 
 router
     .route('/all/created')
@@ -110,19 +109,19 @@ router
 
 router
     .route('/:id/member')
-    .get(authenticate,async(req,res)=>{
+    .get(authenticate,async(req,res)=>{ 
         console.log(req.params.id)
         const id=parseInt(req.params.id);
         try{
-            const data=await db.query(`Select users.id,users.firstname,users.lastname,users.email from teammember 
-                join teams on teams.id=teammember.teamid 
-                join users on users.id=teammember.userid
-                where teams.id=$1`,[id]);
+            const data=await db.query(`SELECT users.id, users.firstname, users.lastname, users.email
+            FROM teammember
+            JOIN users ON users.id = teammember.userid
+            WHERE teammember.teamid = (SELECT teamid FROM tasks WHERE id = $1)`,[id]);
         
             const data2=await db.query(`Select users.id,users.firstname,users.lastname,users.email from teamleader 
-                    join teams on teams.id=teamleader.teamid 
-                    join users on users.id=teamleader.userid
-                    where teams.id=$1`,[id]);
+                join teams on teams.id=teamleader.teamid 
+                join users on users.id=teamleader.userid
+                where teams.id=(SELECT teamid FROM tasks WHERE id = $1)`,[id]);
             const combinedData = [...data.rows, ...data2.rows];
             res.status(200).json({members:combinedData});
         }
@@ -139,7 +138,7 @@ router
         const {task}=req.body;
         console.log(task);
         try{
-            const data=await db.query(`Select userid from taskassign where taskid=$1`,[task]);;
+            const data=await db.query(`Select userid from taskassign where taskid=$1`,[task]);
             console.log(data.rows)
             let common=[];
             data.rows.forEach(e => {

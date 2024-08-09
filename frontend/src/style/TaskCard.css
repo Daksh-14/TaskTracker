@@ -3,7 +3,7 @@
     width: 84vw;
     height:12vh;
     /* background-color: #e3e5f3; */
-    background-image: url('../assets/task_background.png');
+    background-image: url('../assets/llarge.png');
     background-size: cover;
     background-repeat: no-repeat;
     border: 2px solid #ddd;
@@ -60,7 +60,14 @@
     flex-direction: column;
     justify-content: flex-end;
   }
+
+  @media screen and (max-width: 900px) {
+    .TaskCard_outer{
+      background-image: url('../assets/large_bg.png');
+    }
+  }
   @media screen and (max-width: 730px) {
+    
     .TaskCard_title {
         font-size: 1.05rem;
     }

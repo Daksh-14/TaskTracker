@@ -12,7 +12,6 @@ const genToken=(user)=>{
     const refreshToken=jwt.sign({userId:user.id},JWT_REFRESH_SECRET,{expiresIn:JWT_REFRESH_EXPIRATION});
     return {accessToken,refreshToken};
 }
-
 router
     .route('/register')
     .post(async(req,res)=>{
@@ -132,7 +131,7 @@ router
       });
      
 router.
-      route(`/check/:id`)
+      route(`/checkTeam/:id`)
       .get(authenticate,async(req,res)=>{
         const user=req.user;
         const teamid=req.params.id;
@@ -147,4 +146,21 @@ router.
         }
       })
 
-export default router;
+router.
+      route('/checkTask/:id')
+      .get(authenticate,async(req,res)=>{
+        const user=req.user;
+        const taskid=req.params.id;
+        try{
+            const result=await db.query(`Select * from tasks join teamleader on tasks.teamid=teamleader.teamid where id=$1 and userid=$2`,[taskid,user])
+            let ans=(result.rowCount>0);
+            res.status(200).json(ans);
+        }
+        catch(err){
+            console.log(err);
+            res.status(500).json({message:'Error checking status'});
+        }
+      })
+      
+
+     export default router;

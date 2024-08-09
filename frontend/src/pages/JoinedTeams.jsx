@@ -38,7 +38,7 @@ const JoinedTeams = () => {
             <div className="Teams-flex-container">
               { teams.length>0 ? teams.map((team) => (
                 <TeamCard key={team.teamid} link={team.teamid} TeamName={team.teamname} Role="Member" created={true} />
-              )) : <p>You haven't joined any Teams </p>}
+              )) : <p style={{fontSize:'1.3rem'}}>You haven't joined any Teams </p>}
             </div>
           </div>
         )}

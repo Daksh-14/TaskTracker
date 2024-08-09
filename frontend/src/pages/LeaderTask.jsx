@@ -29,7 +29,7 @@ const LeaderTask = () => {
   useEffect(()=>{
     const checkStatus=async()=>{
       try{
-        const response=await axiosInstance.get(`auth/check/${teamId}`);
+        const response=await axiosInstance.get(`auth/checkTeam/${teamId}`);
         console.log(response.data);
         setIsLeader(response.data);
       }

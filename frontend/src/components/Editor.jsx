@@ -6,6 +6,7 @@ import { GoListOrdered } from "react-icons/go";
 import { RiH1, RiH2, RiBold, RiItalic, RiUnderline } from "react-icons/ri";
 import Underline from "@tiptap/extension-underline";
 import "../style/Editor.css"
+import { useEffect } from 'react';
 
 const MenuBar = ({ editor }) => {
   if (!editor) {
@@ -95,10 +96,16 @@ const Editor = ({ formData, setFormData }) => {
     },
   });
 
+  useEffect(() => {
+    if (editor && formData.description !== editor.getHTML()) {
+      editor.commands.setContent(formData.description);
+    }
+  }, [formData.description, editor]);
+
   return (
     <div className="textEditor">
       <MenuBar editor={editor} />
-      <div style={{height:'2vh'}}></div>
+      <div style={{ height: '2vh' }}></div>
       <EditorContent className='edit_box' editor={editor} />
     </div>
   );

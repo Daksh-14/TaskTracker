@@ -4,7 +4,7 @@ import fs from 'fs'
 cloudinary.config({ 
     cloud_name: 'dv534zje8', 
     api_key: '692541759821176', 
-    api_secret: 'TSVQ70NiJ3J_2-QhddD_pWPdy38' // Click 'View 
+    api_secret: 'TSVQ70NiJ3J_2-QhddD_pWPdy38' // Click 'Vi
 });
 
 const uploadfiles=async(filePath)=>{
@@ -26,4 +26,14 @@ const uploadfiles=async(filePath)=>{
     }
 }
 
-export {uploadfiles};
+const deleteFromCloudinary = async (url) => {
+    const publicId = url.split('/').pop().split('.')[0]; // Extract public ID from URL
+    try {
+      await cloudinary.uploader.destroy(publicId);
+      console.log(`Deleted file from Cloudinary: ${publicId}`);
+    } catch (error) {
+      console.error('Error deleting file from Cloudinary:', error);
+    }
+  };
+
+export {uploadfiles,deleteFromCloudinary};

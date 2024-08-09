@@ -4,6 +4,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color:rgb(240, 244, 248) ;
+
 }
 
 .task-assignment{

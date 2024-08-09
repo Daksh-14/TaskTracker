@@ -1,0 +1,68 @@
+/* Base styles */
+.App_Nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+  }
+  
+  .logo {
+    margin-left: 3vw;
+    font-size: 2rem;
+    font-weight: bold;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .nav-links {
+    display: flex;
+    list-style: none;
+    gap: 20px;
+    margin-right: 1.5vw;
+  }
+  
+  .nav-links li{
+    color: white;
+    text-decoration: none;
+  }
+  
+  .hamburger {
+    display: none;
+    cursor: pointer;
+  }
+  
+  
+  
+  /* Mobile styles */
+  @media (max-width: 768px) {
+    .nav-links {
+      display: none;
+      flex-direction: column;
+      background-color: #333;
+      position: absolute;
+      top: 100%;
+      width: 100%;
+      text-align: center;
+      height: auto;
+    }
+  
+    .nav-links.mobile {
+      display: flex;
+      padding-top: 2vh;
+      padding-bottom: 2vh;
+    }
+  
+    .hamburger {
+      display: block;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin-right: 4vw;
+      color: azure;
+      font-size: 1.8rem;
+    }
+  }
+  

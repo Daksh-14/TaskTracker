@@ -17,6 +17,10 @@ import AddTask from "./components/AddTask.jsx";
 import GenLayout from "./GenLayout.jsx";
 import DedicatedTaskL from "./pages/DedicatedTaskL.jsx";
 import Calendar from "./pages/MyCalender.jsx";
+import DashBoard from "./pages/DashBoard.jsx";
+import EditTask from "./pages/EditTask.jsx";
+import TaskFilesLinks from "./components/FileLinkRemove.jsx";
+import MemberAssigned from "./pages/MemberAssigned.jsx";
 
 function App() {
   return (
@@ -41,14 +45,17 @@ function App() {
                                
               </Route> */}
             </Route>
+            <Route index element={<DashBoard/>}/>
             <Route path="team" element={<GenLayout/>}>
               <Route path=":teamId" element={<LeaderTask/>}/>
-              <Route path="create" element={<CreateTask/>}/>
+              <Route path=":teamId/create" element={<CreateTask/>}/>
             </Route>
             <Route path="task" element={<GenLayout/>}>
               <Route path=":task" element={<DedicatedTaskL/>}/>
-              <Route path='edit' element={<AddTask/>}/>
-              <Route path="assign" element={<AddTask/>}/>
+              <Route path=':task/edit' element={<EditTask/>}/>
+              <Route path=":task/assign" element={<AddTask/>}/>
+              <Route path=":task/fileremove" element={<TaskFilesLinks/>}/>
+              <Route path=":task/deassign" element={<MemberAssigned/>}/>
             </Route>
             <Route path="createteam" element={<CreateForm />} />
             <Route path="joined" element={<JoinedTeams />}>
@@ -58,7 +65,6 @@ function App() {
                 </Route> */}
             </Route>
             <Route path="jointeam" element={<JoinForm />} />
-            <Route path="calender" element={<Calendar/>}/>
           </Route>
         </Routes>
       </BrowserRouter>
