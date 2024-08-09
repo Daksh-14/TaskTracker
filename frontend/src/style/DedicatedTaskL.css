@@ -4,22 +4,26 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-items: center;
     gap: 2vh;
+    background-color:rgb(240, 244, 248) ;
 }
 
 .task-button-top{
-    width: 90%;
+    width: 100%;
     display: flex;
     justify-content: flex-end;
+    margin-bottom: 2vh;
 }
 
 .task-button-top button{
     min-width: 8vw;
-    height:4vh;
+    padding: 1vh 0;
     font-size: 1rem;
     border-radius: 10px;
     border-width: 1px;
     background-color: rgb(225, 234, 243);
+    margin-right: 10px;
 }
 
 .task-heading{
@@ -65,7 +69,7 @@
 
 .task-flex button{
     min-width: 11vw;
-    height: 5vh;
+    padding: 1vh 0;
     font-size: 1rem;
     border-radius: 10px;
     border-width: 1px;
@@ -77,8 +81,14 @@
     flex-direction: column;
 }
 
-.task-detail{
-    background-color: rgb(223, 239, 239);
+.task-container{
+    border-radius: 10px;
+    /* width: 85vw; */
+    background-color: rgb(251, 251, 253);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    min-height: 70vh;
+    margin: 4vh;
+    padding: 1.5vh 1.5vw;
 }
 
 @media screen and (max-width:1000px) {

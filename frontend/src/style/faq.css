@@ -1,0 +1,26 @@
+.faq-section {
+    width: 80%;
+    margin: auto;
+    margin-bottom: 5vh;
+  }
+  
+  .faq-item {
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+  }
+  
+  .faq-question {
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .faq-answer {
+    margin-top: 10px;
+    padding-left: 20px;
+    color: #555;
+    transition: max-height 0.3s ease-in-out;
+  }
+  

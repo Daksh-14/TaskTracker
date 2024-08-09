@@ -7,7 +7,7 @@
 .TeamCard_bg{
     height: 80%;
     width: 100%;
-    background-image: url("https://gstatic.com/classroom/themes/img_code.jpg");
+    background-image: url("../assets/Teambg.png");
     background-size: cover;
     background-repeat: no-repeat;
     display: flex;

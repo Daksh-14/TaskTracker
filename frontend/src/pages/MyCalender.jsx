@@ -47,7 +47,7 @@ function MyCalendar() {
   return (
     <div style={{display:'flex',justifyContent:'center'}}>
       <div>
-        <div>Tasks Calendar</div>
+        <div style={{width:'100%',display:'flex', justifyContent:'center', fontSize:'1.5rem',fontWeight:'bold'}}>Tasks Calendar</div>
       <Calendar
         className='calendar'
           onChange={handleDateChange}
@@ -59,14 +59,20 @@ function MyCalendar() {
           }
         />
       {selectedEvents.length > 0 && (
-        <div>
-          <h3>Events on {selectedDate.toDateString()}:</h3>
+        <div style={{
+          marginTop:'2vh',
+          display:'flex',
+          justifyContent:'center'
+        }}>
+          <div style={{display:'flex', flexDirection:'column'}}>
+          <p style={{fontSize:'1.3rem'}}>Events on {selectedDate.toDateString()}:</p>
           {selectedEvents.map((event, index) => (
             <div key={index}>
               <Link to='../'>{event.title}</Link>
-              <p>{event.description}</p>
+              <p style={{fontSize:'1.2rem'}}>{event.description}</p>
             </div>
           ))}
+          </div>
         </div>
       )}
       </div>

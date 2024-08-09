@@ -6,8 +6,7 @@ import '../style/DedicatedTaskL.css'
 
 const DedicatedTaskL = () => {
   const [data, setData] = useState({});
-  const { teamId, task } = useParams();
-  const [iframeSrc, setIframeSrc] = useState(null);
+  const { task } = useParams();
   const [isLeader,setIsLeader]=useState(false);
   useEffect(() => {
     const fetchData = async () => {
@@ -28,7 +27,7 @@ const DedicatedTaskL = () => {
   useEffect(()=>{
     const checkStatus=async()=>{
       try{
-        const response=await axiosInstance.get(`auth/check/${teamId}`);
+        const response=await axiosInstance.get(`auth/checkTask/${task}`);
         console.log(response.data);
         setIsLeader(response.data);
       }
@@ -37,23 +36,22 @@ const DedicatedTaskL = () => {
       }
     }
     checkStatus();
-  },[teamId])
-  const handleButtonClick = (url) => {
-    setIframeSrc(url);
-  };
-
-  const handleCloseClick = () => {
-    setIframeSrc(null);
-  };
+  },[task])
   console.log(data)
   const fileUrls = data.fileurls ? JSON.parse(data.fileurls) : [];
   const links = data.links ? JSON.parse(data.links) : [];
   
   return (
     <div className="task-detail">
+      <div className='task-container'>
       <div className='task-heading'><h2>{data.title}</h2></div>
-      {isLeader && <div className='task-button-top'><Link to='edit'><button>Edit</button></Link></div>}
-      {isLeader && <div className='task-button-top'><Link to='assign'><button>Assign</button></Link></div>}
+      {isLeader && <div className='task-button-top'><Link to='edit'><button>Edit</button></Link>
+        <Link to='fileremove'><button>File Remove</button></Link>
+      </div>}
+      {isLeader && <div className='task-button-top'><Link to='assign'><button>Assign</button></Link>
+        <Link to='deassign'><button>De-Assign</button></Link>
+      </div>}
+
       <div className='task-flex'>
         <div className='task-data'>
           {data.description && <div className="task-description">{parse(data.description)}</div>}
@@ -62,17 +60,12 @@ const DedicatedTaskL = () => {
               <div style={{marginBottom:'1vh'}}>Attachments:</div>
               <div className="file-buttons">
                 {fileUrls.map((url, i) => (
-                  <button key={i} onClick={() => handleButtonClick(url)}>
-                    Open File {i + 1}
-                  </button>
+                  <a href={url} target="_blank" rel="noopener noreferrer"><button>
+                  Open File {i + 1}
+                </button></a>
+                  
                 ))}
               </div>
-            </div>
-          )}
-          {iframeSrc && (
-            <div>
-              <div className='task-fileClose'><button onClick={handleCloseClick}>Close</button></div>
-              <iframe src={iframeSrc} width="100%" height="400" title="File Viewer"></iframe>
             </div>
           )}
           {links.length > 0 && (
@@ -95,7 +88,7 @@ const DedicatedTaskL = () => {
             </div>
         }
       </div>
-      
+      </div>
     </div>
   );
 };

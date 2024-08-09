@@ -10,9 +10,7 @@ const CreatedTeams = () => {
   const location=useLocation()
   useEffect(() => {
     const fetchCreatedTeams = async () => {
-      console.log(location.pathname)
       try {
-        console.log("here")
         const response = await axiosInstance.get('/team/all/created');
         setTeams(response.data.teams);
       } catch (error) {
@@ -31,7 +29,7 @@ const CreatedTeams = () => {
         <h1>Loading...</h1>
       ) : (
         <>
-        (
+        
           <div className="Team-container">
             <div className="HeadingCreate">
               <Link to="../createteam"><button>Create a team</button></Link>
@@ -41,10 +39,10 @@ const CreatedTeams = () => {
               
               { teams.length>0 ? teams.map((team) => (
                 <TeamCard key={team.id} link={team.id} TeamName={team.teamname} Role="Leader" created={true} />
-              )) : <p>You haven't created any Teams </p>}
+              )) : <p style={{fontSize:'1.3rem'}}>You haven't created any Teams </p>}
             </div>
           </div>
-        )
+        
         </>
       )}
     </div>

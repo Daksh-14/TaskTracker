@@ -1,0 +1,139 @@
+.home-container{
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color:rgb(240, 244, 248) ;
+    gap: 6vh;
+}
+
+.home-heading{
+    text-align: center;
+}
+
+.home-start{
+    margin-top: 5vh;
+   display: flex;
+   width: 94vw;
+}
+
+.home-start-text{
+    /* height: 100%; */
+    width: 50vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4vh;
+    align-items: center;
+    /* min-height: 50vh; */
+}
+
+.homestart-image{
+    /* height: 100%; */
+    display: flex;
+    align-items: center;
+}
+
+.homestart-image>img{
+    width: 40vw;
+    height: auto;
+}
+
+.home-start-text>h1{
+    font-size: 1.8rem;
+    text-align: center;
+}
+
+.home-start-text>p{
+    font-size: 1.3rem;
+    text-align: center;
+}
+
+.home-button{
+    background-color: #4343a3;
+  color: white;
+  border: none;
+  border-radius: 1vw;
+  padding: 1.5vh 1.5vw;
+  font-size: 1.3rem;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.features{
+    display: flex;
+    gap :2vw;
+}
+
+.featuresR{
+    display: flex;
+    flex-direction: row-reverse;
+    gap :2vw;
+}
+
+.home-ftext{
+    width: 37vw;
+    display: flex;
+    flex-direction: column;
+    gap: 3vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.home-ftext>p{
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+.home-ftext>div{
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+.home-fimage>img{
+    width: 40vw;
+    height: auto;
+}
+
+@media screen and (max-width:680px) {
+    .features{
+        flex-direction: column-reverse;
+        gap: 2vh;
+    }
+
+    .featuresR{
+        flex-direction: column-reverse;
+        gap: 2vh;
+    }
+    .home-fimage>img{
+        width: 88vw;
+    }
+
+    .home-ftext{
+        width: 88vw;
+    }
+
+    .homestart-image>img{
+        width: 88vw;
+    }
+
+    .home-start-text{
+        width: 88vw;
+    }
+
+    .home-start{
+        flex-direction: column-reverse;
+    }
+    .home-start-text>h1{
+        font-size: 1.4rem;
+    }
+    .home-start-text>p{
+        font-size: 1.2rem;
+    }
+    .home-button{
+        font-size: 1.2rem;
+    }
+}
