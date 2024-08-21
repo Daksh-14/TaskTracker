@@ -16,7 +16,7 @@ TaskTracker is a robust tool designed to streamline project management by ensuri
 
 1. **Clone the repository:**
     ```bash
-    git clone <repository_url>
+    git clone https://github.com/Daksh-14/TaskTracker.git
     ```
 
 2. **Install NPM packages:**
