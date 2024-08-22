@@ -37,6 +37,7 @@ const CreateForm = () => {
         [name]: value
     }));
   };
+  console.log(formData);
   return (
     <div className='form_outer'>
       {loading ? (
@@ -51,7 +52,7 @@ const CreateForm = () => {
                       <input className='login_input' type="text" name="teamName" onChange={onChangeHandler} value={formData.teamName} placeholder="Team Name" required />
                     </div>
                     <div className='button_container'>
-                      <button className='login_submit' type="submit">Login</button>
+                      <button className='login_submit' type="submit">Create</button>
                     </div>
                 </div>
             </form>

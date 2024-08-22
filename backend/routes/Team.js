@@ -9,15 +9,19 @@ const router=express.Router();
 router
     .route('/create')
     .post(authenticate,async(req,res)=>{
-        const {teamName}=req.body;
+        const {teamName}=req.body.formData;
+        console.log(teamName);
         const user=req.user;
+        console.log('haja');
         try{
             const teamCode=uuidv4();
-            const dt=await db.query('Insert into teams (TeamName,joincode) values($1,$2,$3)',[teamName,teamCode]);
-            await db.query('Insert into teamleader (userid,teamid) values($1,$2,$3)',[user,dt.id]);
+            const dt=await db.query('Insert into teams (TeamName,joincode) values($1,$2) returning id',[teamName,teamCode]);
+            
+            await db.query('Insert into teamleader (userid,teamid) values($1,$2)',[user,dt.rows[0].id]);
             res.status(201).json({message:"Team formed successfully"});
         }
         catch(error){
+            console.log(error)
             res.status(500).json({message:"Team formation unsuccessful"});
         }
     })
@@ -98,6 +102,8 @@ router
         const id=req.params.id;
         try{
             await db.query('delete from teamMember where teamid=$1',[id]);
+            await db.query('delete from teamLeader where teamid=$1',[id]);
+            await db.query('delete from tasks where teamid=$1',[id]);
             await db.query('delete from teams where id=$1',[id]);
             res.status(200).json({message:"Team deletion succesful"})
         }

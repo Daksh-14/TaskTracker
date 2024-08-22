@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams,Link, useLocation } from "react-router-dom";
+import { useParams,Link, useLocation,useNavigate } from "react-router-dom";
 import axiosInstance from "../config/axiosconfig";
 import CreateTask from "./CreateTask";
 import TaskCard from "../components/TaskCard.jsx";
@@ -10,6 +10,7 @@ const LeaderTask = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const location=useLocation();
+  const navigate=useNavigate();
   const [isLeader,setIsLeader]=useState(false);
   useEffect(() => {
     const fetchTasks = async () => {
@@ -39,12 +40,23 @@ const LeaderTask = () => {
     }
     checkStatus();
   },[teamId])
+
+  const deleteTeam=async()=>{
+    try{
+      await axiosInstance.delete(`/team/delete/${teamId}`);
+      navigate('../../created');
+    }
+    catch{
+
+    }
+  }
   return (
     <div className="Tasks-outer">
       {loading ? (
         <h1>Loading...</h1>
       ) : (
         <div className="Tasks-container">
+          {isLeader && <div className="Button"><button onClick={deleteTeam}>Delete Team</button></div>}
           <div className="Heading"><h1 className="header">Tasks for Team {teamId}</h1></div>
           {isLeader && <div className="Button"><Link to='create'><button>Create Task</button></Link></div>}
           <div className="Tasks-flex-container">
