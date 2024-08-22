@@ -9,10 +9,12 @@ const AddTask = (props) => {
   const { task} = useParams();
   const [searchMode, setSearchMode] = useState('name'); // 'name' or 'email'
   const [searchQuery, setSearchQuery] = useState('');
+  const [loading,setLoading]=useState(false);
 
   let duplicate=[]
   useEffect(() => {
     const fetchMembers = async () => {
+      setLoading(true);
       try {
         const response = await axiosInstance.get(`team/${task}/member`);
         const arr=response.data.members;
@@ -25,6 +27,9 @@ const AddTask = (props) => {
         setMembers(mem1);
       } catch (error) {
         console.log(error);
+      }
+      finally{
+        setLoading(false);
       }
     };
 

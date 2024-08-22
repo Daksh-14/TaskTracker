@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axiosInstance from '../config/axiosconfig';
 import { useNavigate, useParams } from 'react-router-dom';
+import Loader from './Loader';
 
 const TaskFilesLinks = () => {
   const { task } = useParams();
@@ -56,7 +57,7 @@ const TaskFilesLinks = () => {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <Loader/>;
 
   return (
     <div>

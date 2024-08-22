@@ -2,7 +2,6 @@ import { db } from "../database/db.js";
 import express from "express";
 import { authenticate } from "../middleware/authenticate.js";
 import { v4 as uuidv4 } from "uuid";
-import { JWT_SECRET, JWT_REFRESH_SECRET, JWT_EXPIRATION, JWT_REFRESH_EXPIRATION } from '../config.js'; 
 
 const router=express.Router();
 
@@ -137,6 +136,18 @@ router
         }
     })
    
+router
+    .route('/:id/joincode')
+    .get(async(req,res)=>{
+        try{
+            const data=await db.query('Select * from teams where id=$1',[req.params.id]);
+            res.status(200).json({jc:data.rows[0]});
+        }
+        catch(err){
+            console.log(err);
+        }
+    })
+
 router
     .route('/assigned')
     .post(authenticate,async(req,res)=>{

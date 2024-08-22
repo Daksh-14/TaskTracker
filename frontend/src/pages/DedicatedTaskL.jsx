@@ -4,14 +4,18 @@ import axiosInstance from '../config/axiosconfig';
 import parse from 'html-react-parser';
 import { useNavigate } from 'react-router-dom';
 import '../style/DedicatedTaskL.css'
+import Loader from '../components/Loader';
 
 const DedicatedTaskL = () => {
   const [data, setData] = useState({});
   const { task } = useParams();
   const [isLeader,setIsLeader]=useState(false);
+  const [loading, setLoading] = useState(false);
+
   const navigate=useNavigate()
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         const response = await axiosInstance.get(`task/${task}`);
         const taskData = response.data[0];
@@ -21,6 +25,9 @@ const DedicatedTaskL = () => {
       setData(taskData);
       } catch (err) {
         console.log(err);
+      }
+      finally{
+        setLoading(false)
       }
     };
     fetchData();
@@ -51,6 +58,10 @@ const DedicatedTaskL = () => {
     }
   }
   return (
+    <>
+    {loading?<div style={{height:'100vh',width:'100vw',display:"flex",alignItems:'center',justifyContent:'center'}}>
+        <Loader/>
+        </div> : (
     <div className="task-detail">
       <div className='task-container'>
       {isLeader && <div className='task-button-top'><button  style={{backgroundColor:'#e31717', color:'white'} } onClick={deleteTask}>Delete</button></div>}
@@ -100,7 +111,10 @@ const DedicatedTaskL = () => {
       </div>
       </div>
     </div>
+        )}
+    </>
   );
+  
 };
 
 export default DedicatedTaskL;

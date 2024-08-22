@@ -30,7 +30,7 @@ const TeamNavbar = () => {
   return (
     <nav className="App_Nav">
       <div className="logo">
-        <Link to='../../'><img style={{width:'15vw', height:'auto'}} src={logo} /></Link></div>
+        <Link to='../../'><img style={{width:'30vw',maxWidth:'200px', height:'auto'}} src={logo} /></Link></div>
       <ul className={`nav-links ${isMobile && isMenuOpen ? 'mobile' : ''}`}>
         <li><Link to="created">Your Teams</Link></li>
         <li><Link to="joined">Joined Teams</Link></li>

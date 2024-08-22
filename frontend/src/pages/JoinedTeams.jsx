@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axiosInstance from "../config/axiosconfig";
 import TeamCard from "../components/TeamCard";
 import { Link ,Outlet,useLocation} from 'react-router-dom';
+import Loader from '../components/Loader.jsx';
 import "../style/Teams.css";
 
 const JoinedTeams = () => {
@@ -26,7 +27,9 @@ const JoinedTeams = () => {
   return (
     <div className="Team-outer">
       {loading ? (
-        <h1>Loading...</h1>
+        <div style={{height:'100vh',width:'100vw',display:"flex",alignItems:'center',justifyContent:'center'}}>
+        <Loader/>
+        </div>
       ) : (
         <>
         {location.pathname === "/task-tracker/joined" && (
