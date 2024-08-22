@@ -4,7 +4,7 @@ TaskTracker is a robust tool designed to streamline project management by ensuri
 
 ## Tech Stack
 
-**Client:** React, Redux
+**Client:** React
 
 **Server:** Node, Express
 
