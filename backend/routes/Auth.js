@@ -3,13 +3,14 @@ import {db} from '../database/db.js'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { authenticate } from '../middleware/authenticate.js'
-import { JWT_SECRET, JWT_REFRESH_SECRET, JWT_EXPIRATION, JWT_REFRESH_EXPIRATION } from '../config.js';
+import 'dotenv/config'
 
 const router=express.Router();
 
 const genToken=(user)=>{
-    const accessToken=jwt.sign({userId:user.id},JWT_SECRET,{expiresIn:JWT_EXPIRATION});
-    const refreshToken=jwt.sign({userId:user.id},JWT_REFRESH_SECRET,{expiresIn:JWT_REFRESH_EXPIRATION});
+    console.log(process.env);
+    const accessToken=jwt.sign({userId:user.id},process.env.JWT_SECRET,{expiresIn:process.env.JWT_EXPIRATION});
+    const refreshToken=jwt.sign({userId:user.id},process.env.JWT_REFRESH_SECRET,{expiresIn:process.env.JWT_REFRESH_EXPIRATION});
     return {accessToken,refreshToken};
 }
 router
@@ -80,12 +81,12 @@ router
           return res.status(401).send('Refresh token required');
         }
       
-        jwt.verify(refreshToken, JWT_REFRESH_SECRET, (err, user) => {
+        jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET, (err, user) => {
           if (err) {
             return res.status(403).send('Invalid refresh token');
           }
       
-          const newAccessToken = jwt.sign({ userId: user.userId }, JWT_SECRET, { expiresIn: JWT_EXPIRATION });
+          const newAccessToken = jwt.sign({ userId: user.userId }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRATION });
           res.cookie('accessToken', newAccessToken, { httpOnly: true, secure: true, sameSite: 'Strict' });
           res.status(200).json({ message: 'Token refreshed' });
         });
@@ -105,7 +106,7 @@ router
           return res.status(401).json({ isLoggedIn: false });
         }
         try{
-            jwt.verify(refreshToken,JWT_REFRESH_SECRET,(err,user)=>{
+            jwt.verify(refreshToken,process.env.JWT_REFRESH_SECRET,(err,user)=>{
                 if(err){
                     return res.status(401).json({ isLoggedIn: false });
                 }

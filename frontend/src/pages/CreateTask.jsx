@@ -5,6 +5,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import Editor from '../components/Editor';
 import '../style/CreateTask.css';
 import { useParams ,useNavigate} from 'react-router-dom';
+import Loader from '../components/Loader';
 
 const CreateTask = () => {
   const [formData, setFormData] = useState({
@@ -15,13 +16,14 @@ const CreateTask = () => {
     links: [],
     time:''
   });
+  const [loading, setLoading] = useState(false);
   const fileInputRef = useRef(null);
   const [linkInput, setLinkInput] = useState('');
   const { teamId } = useParams();
   const navigate=useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     // Create a FormData object
     const data = new FormData();
     let date=formData.dueDate;
@@ -61,6 +63,9 @@ const CreateTask = () => {
       navigate(`../${teamId}`);
     } catch (error) {
       console.error('Error adding task', error);
+    }
+    finally{
+      setLoading(false);
     }
   };
 
@@ -117,7 +122,12 @@ const CreateTask = () => {
   };
   
   return (
+    
     <div className="CreateTask_outer">
+      {
+        loading? (<div style={{height:'100vh',width:'100vw',display:"flex",alignItems:'center',justifyContent:'center'}}>
+          <Loader/>
+          </div>):(
       <div className="CreateTask_layout">
         <div className='Createtask_heading'><h1>Add a New Task</h1></div>
         <form onSubmit={handleSubmit}>
@@ -199,6 +209,7 @@ const CreateTask = () => {
           </div>
         </form>
       </div>
+    )}
     </div>
   );
 };

@@ -1,8 +1,7 @@
-// Login.jsx
 import React, { useState } from 'react';
 import axiosInstance from '../config/axiosconfig';
 import { useNavigate } from 'react-router-dom';
-// import Loader from '../components/Loader'; // Import your Loader component
+import Loader from '../components/Loader'; 
 import "../style/login.css"
 
 const SignUp = () => {
@@ -44,7 +43,7 @@ const SignUp = () => {
   return (
     <div className='form_outer'>
       {loading ? (
-        <h1>loading</h1>
+        <Loader/>
       ) : (
         <div className="form_layout SignUp">
           <div><h1>SignUp</h1></div>

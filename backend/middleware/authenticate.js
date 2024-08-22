@@ -1,6 +1,5 @@
-import express from "express"
 import jwt from "jsonwebtoken";
-import { JWT_SECRET, JWT_REFRESH_SECRET, JWT_EXPIRATION, JWT_REFRESH_EXPIRATION } from '../config.js';
+import 'dotenv/config'
 
 export const authenticate=(req,res,next)=>{
     const accessToken=req.cookies.accessToken;
@@ -10,9 +9,9 @@ export const authenticate=(req,res,next)=>{
             return res.status(404).json({message:"Refresh token expired"});
         }
         try{
-        const user=jwt.verify(refreshToken,JWT_REFRESH_SECRET);
+        const user=jwt.verify(refreshToken,process.env.JWT_REFRESH_SECRET);
         const userid=user.userId;
-        const newAccessToken=jwt.sign({userId:userid},JWT_SECRET,{expiresIn:JWT_EXPIRATION});
+        const newAccessToken=jwt.sign({userId:userid},process.env.JWT_SECRET,{expiresIn:process.env.JWT_EXPIRATION});
         res.cookie('accessToken', newAccessToken, { httpOnly: true, secure: true, sameSite: 'Strict' });
         req.user=userid;
         next()
@@ -23,7 +22,7 @@ export const authenticate=(req,res,next)=>{
     }
     else{
         try{
-            const user=jwt.verify(accessToken,JWT_SECRET);
+            const user=jwt.verify(accessToken,process.env.JWT_SECRET);
             const userid=user.userId;
             req.user=userid;
             next();
@@ -34,9 +33,9 @@ export const authenticate=(req,res,next)=>{
                 return res.status(404).json({message:"Refresh token expired"});
             }
             try{
-            const user=jwt.verify(refreshToken,JWT_REFRESH_SECRET);
+            const user=jwt.verify(refreshToken,process.env.JWT_REFRESH_SECRET);
             const userid=user.userId;
-            const newAccessToken=jwt.sign({userId:userid},JWT_SECRET,{expiresIn:JWT_EXPIRATION});
+            const newAccessToken=jwt.sign({userId:userid},process.env.JWT_SECRET,{expiresIn:process.env.JWT_EXPIRATION});
             res.cookie('accessToken', newAccessToken, { httpOnly: true, secure: true, sameSite: 'Strict' });
             req.user=userid;
             next()

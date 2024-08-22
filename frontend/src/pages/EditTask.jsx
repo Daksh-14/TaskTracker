@@ -8,7 +8,7 @@ import { useParams ,useNavigate} from 'react-router-dom';
 
 const EditTask=()=>{
     const [assigned,setAssigned]=useState([])
-    const [loading,setLoading]=useState(true);
+    const [loading,setLoading]=useState(false);
      const [formData, setFormData] = useState({
         title: '',
         description: 'Add task description here',
@@ -24,7 +24,7 @@ const EditTask=()=>{
       const navigate=useNavigate();
       const handleSubmit = async (e) => {
         e.preventDefault();
-    
+        setLoading(true);
         // Create a FormData object
         const data = new FormData();
         let date=formData.dueDate;
@@ -63,6 +63,9 @@ const EditTask=()=>{
           navigate(`../`);
         } catch (error) {
           console.error('Error adding task', error);
+        }
+        finally{
+          setLoading(false);
         }
       };
     
@@ -146,6 +149,10 @@ const EditTask=()=>{
       };
       
       return (
+        <>
+        {loading?<div style={{height:'100vh',width:'100vw',display:"flex",alignItems:'center',justifyContent:'center'}}>
+        <Loader/>
+        </div>:(
         <div className="CreateTask_outer">
           <div className="CreateTask_layout">
             <div className='Createtask_heading'><h1>Add a New Task</h1></div>
@@ -229,6 +236,8 @@ const EditTask=()=>{
             </form>
           </div>
         </div>
+        )}
+        </>
       );
 }
 

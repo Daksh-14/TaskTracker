@@ -7,11 +7,13 @@ const MemberAssigned = (props) => {
   const [members, setMembers] = useState([]);
   const [selectedMembers, setSelectedMembers] = useState([]);
   const { task} = useParams();
+  const [loading, setLoading] = useState(false);
   const [searchMode, setSearchMode] = useState('name'); // 'name' or 'email'
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     const fetchMembers = async () => {
+      setLoading(true);
       try {
         const { data } = await axiosInstance.get(`task/${task}/assigned`);
         console.log(data);
@@ -19,6 +21,9 @@ const MemberAssigned = (props) => {
         setMembers(mem1);
       } catch (error) {
         console.log(error);
+      }
+      finally{
+        setLoading(false);
       }
     };
 
@@ -60,6 +65,10 @@ const MemberAssigned = (props) => {
   }
 
   return (
+    <>
+    {loading?<div style={{height:'100vh',width:'100vw',display:"flex",alignItems:'center',justifyContent:'center'}}>
+        <Loader/>
+        </div>:(
     <div className="task-assignment">
       <div style={{
                     backgroundColor: 'rgb(251, 251, 253)',padding:'5vh 5vw',borderRadius:"2vh",boxShadow:'0 10px 10px 0 rgba(0, 0, 0, 0.2)'} }>
@@ -112,6 +121,8 @@ const MemberAssigned = (props) => {
         </div>
       </div>
     </div>
+        )}
+    </>
   );
 };
 

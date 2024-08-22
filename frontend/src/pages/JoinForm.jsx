@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axiosInstance from '../config/axiosconfig';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/AuthContext.jsx';
+import Loader from '../components/Loader.jsx';
 import "../style/login.css";
 
 const JoinForm = () => {
@@ -40,7 +41,7 @@ const JoinForm = () => {
   return (
     <div className='form_outer'>
       {loading ? (
-        <h1>Loading...</h1>
+        <Loader/>
       ) : (
         <div className="form_layout">
           <div><p>Join a team</p></div>

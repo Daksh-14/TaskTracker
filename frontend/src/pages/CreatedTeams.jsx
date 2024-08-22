@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axiosInstance from "../config/axiosconfig";
 import TeamCard from "../components/TeamCard";
 import { Link,useLocation,Outlet} from "react-router-dom";
+import Loader from "../components/Loader";
 import "../style/Teams.css"
 
 const CreatedTeams = () => {
@@ -26,7 +27,9 @@ const CreatedTeams = () => {
   return (
     <div className="Team-outer">
       {loading ? (
-        <h1>Loading...</h1>
+        <div style={{height:'100vh',width:'100vw',display:"flex",alignItems:'center',justifyContent:'center'}}>
+        <Loader/>
+        </div>
       ) : (
         <>
         
