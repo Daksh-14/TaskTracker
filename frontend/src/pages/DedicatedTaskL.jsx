@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useParams ,Link} from 'react-router-dom';
 import axiosInstance from '../config/axiosconfig';
 import parse from 'html-react-parser';
+import { useNavigate } from 'react-router-dom';
 import '../style/DedicatedTaskL.css'
 
 const DedicatedTaskL = () => {
   const [data, setData] = useState({});
   const { task } = useParams();
   const [isLeader,setIsLeader]=useState(false);
+  const navigate=useNavigate()
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -28,7 +30,6 @@ const DedicatedTaskL = () => {
     const checkStatus=async()=>{
       try{
         const response=await axiosInstance.get(`auth/checkTask/${task}`);
-        console.log(response.data);
         setIsLeader(response.data);
       }
       catch(error){
@@ -40,10 +41,19 @@ const DedicatedTaskL = () => {
   console.log(data)
   const fileUrls = data.fileurls ? JSON.parse(data.fileurls) : [];
   const links = data.links ? JSON.parse(data.links) : [];
-  
+  const deleteTask=async()=>{
+    try{
+      await axiosInstance.post('task/delete',{taskid:task});
+      navigate(-1);
+    }
+    catch(error){
+
+    }
+  }
   return (
     <div className="task-detail">
       <div className='task-container'>
+      {isLeader && <div className='task-button-top'><button  style={{backgroundColor:'#e31717', color:'white'} } onClick={deleteTask}>Delete</button></div>}
       <div className='task-heading'><h2>{data.title}</h2></div>
       {isLeader && <div className='task-button-top'><Link to='edit'><button>Edit</button></Link>
         <Link to='fileremove'><button>File Remove</button></Link>
@@ -60,7 +70,7 @@ const DedicatedTaskL = () => {
               <div style={{marginBottom:'1vh'}}>Attachments:</div>
               <div className="file-buttons">
                 {fileUrls.map((url, i) => (
-                  <a href={url} target="_blank" rel="noopener noreferrer"><button>
+                  <a key={i} href={url} target="_blank" rel="noopener noreferrer"><button>
                   Open File {i + 1}
                 </button></a>
                   

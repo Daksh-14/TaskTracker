@@ -227,6 +227,21 @@ router
     }
     })
 
+router.
+    route('/delete')
+    .post(async(req,res)=>{
+      const {taskid}=req.body;
+      console.log('hwhwh');
+      try{
+      await db.query('delete from taskassign where taskid=$1',[taskid]);
+      await db.query('delete from tasks where id=$1',[taskid]);
+      res.status(200).json({ message: 'Task deleted successfully.' });
+      }
+      catch(err){
+        res.status(500).json({ message: 'Task deletion failed.' });
+      }
+    })
+
 router
     .route(`/filesdelete`)
     .post(async(req,res)=>{
@@ -278,7 +293,6 @@ router
       try{
       const data=await db.query(`Select * from taskassign join tasks on tasks.id=taskassign.taskid join users on users.id=tasks.createdby
           where taskid=$1`,[taskid]);
-          console.log(data.rows);
       res.status(200).json(data.rows);
       }
       catch(err){
